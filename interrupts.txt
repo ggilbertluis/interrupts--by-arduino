@@ -1,0 +1,44 @@
+int buttonint =0; //pin 2 on the arduino
+
+//setup the leds
+int yellowled = 11 ;
+int redled = 10 ;
+int greenled = 9 ;
+int nullled = 6 ;
+volatile int selectedled = greenled;
+
+//setup the distance sensor
+int distpin = 0 ;
+ 
+ 
+ void setup()
+ {
+    pinMode(redled,OUTPUT); 
+    pinMode(greenled,OUTPUT); 
+    pinMode(yellowled,OUTPUT); 
+    pinMode(nullled,OUTPUT); 
+    
+    //Attach the interrupt
+    attachInterrupt(buttonint, swap, RISING);
+ }
+ // the interrupt function
+ void swap()
+ {
+    if (selectedled == greenled)
+      selectedled = redled;
+    else if ( selectedled = redled)
+      selectedled = yellowled;
+     else if (selectedled = yellowled)
+      selectedled = nullled;
+     else 
+      selectedled = greenled; 
+ }
+ void loop()
+ {
+    //Read distance Sensor
+    int dist = analogRead(distpin);
+    int brightness = map(dist, 0 ,1023 , 0,255);
+    
+    //control led brightness
+    analogWrite(selectedled, brightness);
+ }
